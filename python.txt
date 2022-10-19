@@ -4,6 +4,13 @@ https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html
 
 array:  https://jakevdp.github.io/PythonDataScienceHandbook/02.02-the-basics-of-numpy-arrays.html
 _______________________________________________________________________________________________________________
+NOTE & UPDATE:
+
+*PYLAB: 
+"pylab is a convenience module that bulk imports matplotlib.pyplot (for plotting) and numpy (for mathematics and working with arrays) in a single namespace. pylab is deprecated and its use is strongly discouraged because of namespace pollution"
+-> al posto di pylab scrivi numpy/matplotlib.pyplot
+
+______________________________________________________________________________________________________________
 COMANDI UTILI:
 
 type(var) = stampa il tipo della variabile
