@@ -1,0 +1,65 @@
+LINUX CHEATSHEET:
+
+pwd = current path
+cd = go to home
+    - = posizione precedente
+    .. = posizione superiore
+    path = go to path
+ls = list 
+    -a = all 
+    -A = all senza file nascosti
+    -h = human readable
+    -s = size
+    -l = elenco
+    -S = sort by
+emacs -nw = emacs terminal
+
+
+PYTHON:
+*in python "base" (non numpy) non esistono array ma liste. cioè collezioni di dati potenzialmente eterogenei
+*un array numpy contenente elementi eterogenei li trasforma nel tutti nel tipo più generico
+*maschere = modifica l'array nascondendo degli elementi
+    eg.
+        am = np.array([ 10, 20, 11, 1, 22, 2, 7, 77, 101, 274, 888, 55, 4])
+        amask = am > 10
+        amask //output:array([False,  True,  True, False,  True, False, False,  True,  True, True,  True,  True, False])
+        print('array originale           ', am)
+        print('array con maschera        ', am[amask])
+        print('array con maschera inversa', am[~amask])
+        //output: array originale            [ 10  20  11   1  22   2   7  77 101 274 888  55   4]
+                    array con maschera         [ 20  11  22  77 101 274 888  55]
+                    array con maschera inversa [10  1  2  7  4]
+
+
+tipe(var) = tipo della variabile
+
+
+a= np.array([1,2]) = array numpy di nome a.
+d.type(a) = stampa il tipo degli elementi di a
+a.size = len(a) = dimensione/lunghezza di a
+ar2 = np.arange(0, 10, 2) # argumenti: start, stop, step. array con elementi da 0 a 10 a passo di 2
+aln = np.linspace(0, 10, 5)  # argomenti:  start stop lunghezza. array di 5 elementi equispaziari tra 0 e 10
+alog = np.logspace( -2, 2, 9 )  # argomenti: esponente start, esponente stop, lunghezza. array di 9 logaritmicamente equispaziati tra -2 e 2
+alog2 = np.logspace( -2, 2, 9, base=2)  # argomenti: esponente start, esponente stop, lunghezza
+a0 = np.zeros(5) = array di 5 elementi 0
+a1 = np.ones(5) = array di 5 elementi 1
+aempty = np.empty(0) = np.array([]) = array vuoto 
+a1 = np.append( a1,  a2) = concatena in a1, a1 e a2
+
+scipy.cluster Vector quantization / Kmeans
+scipy.constants Physical and mathematical constants
+scipy.fftpack Fourier transform
+scipy.integrate Integration routines
+scipy.interpolate Interpolation
+scipy.io Data input and output
+scipy.linalg Linear algebra routines
+scipy.ndimage n-dimensional image package
+scipy.odr Orthogonal distance regression
+scipy.optimize Optimization
+scipy.signal Signal processing
+scipy.sparse Sparse matrices
+scipy.spatial Spatial data structures and algorithms
+scipy.special Any special mathematical functions
+scipy.stats Statistics
+
+pandas = gestione dati in data frames (tabelle)

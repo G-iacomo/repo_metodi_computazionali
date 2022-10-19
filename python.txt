@@ -1,0 +1,93 @@
+LINK UTILI:
+
+https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html
+
+array:  https://jakevdp.github.io/PythonDataScienceHandbook/02.02-the-basics-of-numpy-arrays.html
+_______________________________________________________________________________________________________________
+COMANDI UTILI:
+
+type(var) = stampa il tipo della variabile
+
+nome lista.append(arg) = aggiuge l'argomento in coda alla lista/array
+
+array [i] = indice vale anche per lista. valgono indici negativi. -1 restituisce l'ultimo ecc
+
+variabili=pylab.loadtxt('nome') = legge il file riga per riga
+
+variabili=pylab.loadtxt('nome', unpack=True) = legge il file per colonna
+
+pylab.errorbar(x,y,sigma,dx,linestyle = '', color = 'black', marker = '.') = barre di errore e grafico con punti
+
+pylab.minorticks_on() = sottointervalli sugli assi
+
+numpy.corrcoef(x, y, rowvar=True) = matrice correlazione/covarianza normalizzata
+
+pylab.xscale('log') = scala logaritmica
+
+pylab.figure(1) = fa il plot successivo nella finestra numero 1 (serve a separare i grafici in più figure)
+
+pylab.axhline = linea orizzontale
+
+pylab.xlabel('nome') = nome asse
+
+pylab.legend(fontsize = 12, loc = "upper left") = legenda(inserire label dove definisci la grafica (le cose dove sono scritte color))
+
+pylab.grid() = griglia
+
+xx=numpy.linspace(min(x),max(x),2000) = array puramente per scopi grafici con punti distribuiti linearmente
+
+xx=numpy.logspace(numpy.log10(min(x)),numpy.log10(max(x)),2000) = array puramente per scopi grafici con punti distribuiti logaritmicamente
+
+pylab.tight_layout() = previene eventuali cose brutte graficamente
+
+matplotlib.pyplot.pause(0.01) = pone in pausa python (utile prima di salvare le figure o per seed random)
+
+numpy.deg2rad(x) = trasforma i gradi in radianti. molto utile evita casini. python non sa lavorare in gradi. i grafici vanno stampati in gradi quindi conviene usare questa funzione all'interno della def funzione di fit anzichè trasformarli prima con una proporzione
+______________________________________________________________________________________________________________
+COME SALVARE E VISUALIZZARE LE IMMAGINI DECENTEMENTE:
+
+import matplotlib
+...
+pylab.tight_layout()
+manager = matplotlib.pyplot.get_current_fig_manager()
+manager.resize(*manager.window.maxsize())
+matplotlib.pyplot.pause(0.01) #se non viene bene aumenta qui
+pylab.savefig('/home/gb/Desktop/prova.pdf')
+pylab.show()
+______________________________________________________________________________________________________________
+COME SCRIVERE IN UN FILE OUTPUT:
+DA SCRIPT:
+with open('output.txt', 'a') as f: #a=append. mette in coda. se metti w sovrascrive
+    print('cose', file=f)
+DA SHELL:
+python>file.txt= scrive output nel file cancellando ciò che vi è (redirizione)
+python>>file.txt= scrive output nel file su una riga successiva (senza cancellare nulla!) (rederizione)
+______________________________________________________________________________________________________________
+CICLI FOR:
+
+for x in range(6):
+  print(x)
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+  if x == "banana":
+    continue
+  print(x)
+_____________________________________________________________________________________________________________
+ITERARAE UN FIT:
+
+da inserire subito dopo  curve_fit:
+
+sigma=dy
+for j in range (100):
+    sigma=dy+(DERIVATA DELLA FUNZIONE DA FITTARE FF IN X)*dx
+    pars,covm=curve_fit(ff,x,y,init,sigma,absolute_sigma=False)
+    print('pars:',pars)
+    print('covm:',covm)  
+pylab.errorbar(x,y,sigma,dx,linestyle = '', color = 'black', marker = '.')
+____________________________________________________________________________________________________________
+COME STAMPARE A LAB:
+
+.absolute_sigma=False
+.pylab.savefig('nome') PRIMA DI pylab.show()
+.esegui da terminale
+____________________________________________________________________________________________________________
