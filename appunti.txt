@@ -63,3 +63,25 @@ scipy.special Any special mathematical functions
 scipy.stats Statistics
 
 pandas = gestione dati in data frames (tabelle)
+
+*aprire csv:
+	array=numpy.loadtxt('path', delimiter=',', unpack=True)
+	    #apre un csv i cui delimitatori sono ","
+	    #unpack=True significa che sono in colonna
+	dataframe=pandas.rad_csv('path')
+	    #apre un csv conla struttura dataframe
+	array=dataframe['nome colonna']
+	    #assegna ad un array la colonna del df con quel nome
+*funzioni:
+	possono essere usate anche come "oggetti" attribuendo una variabile alla funzione
+	eg. var=funzione
+	def nome(argomenti):
+	    roba
+	    return #opzionale
+	gli argomenti possono essere passati:
+	    direttamente
+	    con n-uple posizionali *args
+	    attraverso dictionary **kwargs (keywords, no posizionali)
+	documentazione: docstring
+			nome funzione elenca i parametri
+			help(funzione)
