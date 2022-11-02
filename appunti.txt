@@ -64,6 +64,10 @@ scipy.stats Statistics
 
 pandas = gestione dati in data frames (tabelle)
 
+COMANDI:
+pyplot.xscalae('log')
+
+
 *aprire csv:
 	array=numpy.loadtxt('path', delimiter=',', unpack=True)
 	    #apre un csv i cui delimitatori sono ","
@@ -85,3 +89,15 @@ pandas = gestione dati in data frames (tabelle)
 	documentazione: docstring
 			nome funzione elenca i parametri
 			help(funzione)
+*grafici bellini:
+	 df=pd.read_csv('/home/gb980061/repo_metodi_computazionali/04/fit_data.csv')
+	 plt.plot(df['x'],df['y'], color= 'green', label='conteggi')
+	 plt.xscale('log')
+	 plt.xlabel('X')
+	 plt.ylabel('conteggi')
+	 plt.grid()
+	 plt.minorticks_on()
+	 plt.legend(fontsize = 12, loc = "upper left")
+	 plt.tight_layout()
+	plt.show()
+		
