@@ -1,0 +1,23 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import integrate
+
+def f_diff(Vo,t,Vi,rc):
+    #Vo=Vout istante 0
+    i=int(t*100)
+    return (Vi-Vo)/rc
+
+t=np.linspace(0,10,100)
+Vo=np.zeros(len(t))
+Vi=np.ones(len(t))
+'''
+for i in range(10,len(t)+10,10):
+    Vi[i:i+10]=-1
+'''
+for i in range(len(t)):
+    if int(t[i])%2==1:
+        Vi[i]=-1
+plt.plot(t,Vi)
+Vo=integrate.odeint(f_diff,Vo,t,args=(Vi,1))
+plt.plot(t,Vo)
+plt.show()

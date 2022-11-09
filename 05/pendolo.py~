@@ -1,0 +1,20 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import integrate
+
+def f_diff(r,t,l):
+    '''
+    r(theta,omega) vettore 
+    l lunghezza pendolo
+    d=derivata rispetto al tempo
+    '''
+    dtheta=r[1]
+    dw=-9.81math.sin(r[0])/l
+    dr=[dtheta,dw]
+    return dr
+
+l=0.5
+r0=[45,0]
+t=np.linspace(0,10,1000)
+sol=integrate.odeint(f_diff,r0,t,args=(l))
+
