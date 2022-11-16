@@ -1,0 +1,20 @@
+import numpy
+import matplotlib.pyplot as plt
+from scipy import optimize
+from scipy import fft
+import pandas as pd
+d1=pd.read_csv('/home/gb980061/repo_metodi_computazionali/06/data_sample1.csv')
+d2=pd.read_csv('/home/gb980061/repo_metodi_computazionali/06/data_sample2.csv')
+d3=pd.read_csv('/home/gb980061/repo_metodi_computazionali/06/data_sample3.csv')
+''' note
+d1['time']=t
+d2['meas']=y
+modifica dy
+'''
+print (d1,d3)
+print(d2)
+def f_fit(t,b):
+    return t**(-b)
+dy=np.ones(len(d1['time']))
+#par=
+#par,parcov=scipy.optimize.curve_fit(f_fit,df['time'],df['meas'],p0=[par],sigma=y, absolute_sigma=True)
