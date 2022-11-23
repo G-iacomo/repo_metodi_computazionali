@@ -14,6 +14,8 @@ def random(passi):
     return x,y
 x=np.zeros(n)
 y=np.zeros(n)
+plt.hist(np.random.uniform(low=0.0, high=2*np.pi, size=100))
+plt.show()
 for i in range(n-1):
     x[i],y[i]=random(10)
     plt.plot(x,y,'o')
