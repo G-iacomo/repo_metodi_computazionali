@@ -1,4 +1,0 @@
-import somme
-
-n=input('inserire un intero positivo')
-print('la somma dei primi ')
