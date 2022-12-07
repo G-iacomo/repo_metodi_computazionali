@@ -1,0 +1,25 @@
+import numpy as np
+
+class Hit:
+    def __init__(self,modulo,sensore,tempo):
+        self.modulo=modulo
+        self.sensore=sensore
+        self.tempo=tempo
+    def __lt__(self,other):
+        return self.tempo < other.tempo
+
+class Event:
+    def __init__(self):
+        self.nhit=0
+        self.tstart=np.inf
+        self.tstop=-np.inf
+        self.durata=np.inf
+        self.a_Hit=np.empty(0)
+    def aggiungi_hit(self,Hit):
+        self.nhit=self.nhit+1
+        if nhit==0:
+            self.tstart=Hit.tempo
+        self.tstop=Hit.tstop
+        self.durata=self.tstop-self.tstart
+        self.a_Hit=np.append(self.a_Hits,Hit)
+

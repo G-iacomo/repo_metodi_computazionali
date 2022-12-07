@@ -1,0 +1,10 @@
+import reco
+'''
+def leggi_dati(df):
+'''
+
+df0=pd.read_csv('/home/gb980061/repo_metodi_computazionali/09/hit_times_M0.csv')
+df1=pd.read_csv('/home/gb980061/repo_metodi_computazionali/09/hit_times_M1.csv')
+df2=pd.read_csv('/home/gb980061/repo_metodi_computazionali/09/hit_times_M2.csv')
+df3=pd.read_csv('/home/gb980061/repo_metodi_computazionali/09/hit_times_M3.csv')
+print(df0-keys())
