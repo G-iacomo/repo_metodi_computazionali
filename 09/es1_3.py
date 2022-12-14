@@ -26,8 +26,7 @@ def array_evento(dt,start,stop):
 '''
 
 def array_evento(dt,array_hit):
-    ae=np.empty(0)
-    ae=np.append(ae,reco.Event())
+    ae=reco.Event()
     for i in range(len(dt)):
         if dt[i]<=threshold:
             ae[-1].aggiungi_hit(array_hit[i])
@@ -59,10 +58,8 @@ logbins=np.logspace(np.log10(np.min(t_diff)),np.log10(np.max(t_diff)),bins) #lar
 plt.hist(t_diff,bins=logbins)
 plt.xscale('log')
 plt.grid()
-#plt.show()
-i=0
-j=0
-while ((i+1)<(len(dt)) and j<len(dt)):
-    evento=np.empty(0)
-    evento[i]=array_evento(t_diff,array_hit,j)
-    j=len(evento)
+plt.show()
+
+ae=array_evento(t_diff,array_hit)
+for i in range(10):
+	print(ae[i])
