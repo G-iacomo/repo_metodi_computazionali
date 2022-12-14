@@ -7,6 +7,10 @@ class Hit:
         self.tempo=tempo
     def __lt__(self,other):
         return self.tempo < other.tempo
+    def __repr__(self):
+        return '{}'.format(self.tempo)
+    def __sub__(self,other):
+        return self.tempo - other.tempo
 
 class Event:
     def __init__(self):
