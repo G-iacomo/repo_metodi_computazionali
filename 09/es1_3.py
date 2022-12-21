@@ -26,8 +26,10 @@ def array_evento(dt,start,stop):
 '''
 
 def array_evento(dt,array_hit):
-    ae=reco.Event()
-    for i in range(len(dt)):
+    ae=np.empty(0)
+    ae=np.append(ae,reco.Event())
+    #ae=reco.Event()
+    for i in range(len(dt)): #sbagliato perchè dt ha lunghezza meno uno. devi prima o differenza punto per punto e non array differenze. quindi così devi mettere prima il primo evento (benedetta)
         if dt[i]<=threshold:
             ae[-1].aggiungi_hit(array_hit[i])
         else:
@@ -43,23 +45,29 @@ df3=pd.read_csv('/home/gb980061/repo_metodi_computazionali/09/hit_times_M3.csv')
 threshold=100
 array_hit=np.empty(0)
 array_hit=np.append(array_hit,leggi_dati(df0))
-array_hit=np.append(array_hit,leggi_dati(df1))
-array_hit=np.append(array_hit,leggi_dati(df2))
-array_hit=np.append(array_hit,leggi_dati(df3))
+if True:
+#if False:
+    array_hit=np.append(array_hit,leggi_dati(df1))
+    array_hit=np.append(array_hit,leggi_dati(df2))
+    array_hit=np.append(array_hit,leggi_dati(df3))
 array_hit=np.sort(array_hit)
-'''
-for i in range (10):
-    print(array_hit[i])
-'''
+
 bins=80 #numero dei bin   
 mask=(np.diff(array_hit))>0
 t_diff=np.diff(array_hit)[mask]
-logbins=np.logspace(np.log10(np.min(t_diff)),np.log10(np.max(t_diff)),bins) #larghezza bins log10
-plt.hist(t_diff,bins=logbins)
-plt.xscale('log')
-plt.grid()
-plt.show()
+if False:
+#if True:
+    logbins=np.logspace(np.log10(np.min(t_diff)),np.log10(np.max(t_diff)),bins) #larghezza bins log10
+    plt.hist(t_diff,bins=logbins)
+    plt.xscale('log')
+    plt.grid()
+    plt.show()
 
 ae=array_evento(t_diff,array_hit)
-for i in range(10):
-	print(ae[i])
+nhit_in_ae=np.empty(0)
+for i in range(len(ae)):
+    nhit_in_ae=np.append(nhit_in_ae,ae[i].nhit)
+if True:
+    plt.hist(nhit_in_ae,bins=20)
+    plt.show() #risultato errato.
+
