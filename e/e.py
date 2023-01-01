@@ -50,20 +50,19 @@ if check: #controlla la correttezza della selezione dei dati confrontando il num
 ##########################################
 #           SELEZIONE MEDIE
 
-#print(dati[0:4])
 def media(x,y):
     return (x+y)/2
 
-
-
-#for i in range(0,4,4):
-for k in tqdm(100):
-    for i in range(0,len(dati)-4+1,4):
-        dati.at[i+1,'SO2 Mean'] = media(dati.at[i+1,'SO2 Mean'],dati.at[i+2,'SO2 Mean'])
-        dati.at[i+1,'SO2 1st Max Value'] = max(dati.at[i+1,'SO2 1st Max Value'],dati.at[i+2,'SO2 1st Max Value'])
-        dati.at[i+1,'CO Mean'] = media(dati.at[i+1,'CO Mean'],dati.at[i+2,'CO Mean'])
-        dati.at[i+1,'CO 1st Max Value'] = max(dati.at[i+1,'CO 1st Max Value'],dati.at[i+2,'CO 1st Max Value'])
-        dati = dati.drop([i],axis=0)
-        dati = dati.drop([i+2],axis=0)
-        dati = dati.drop([i+3],axis=0)
-print(dati)
+#for i in tqdm(range(0,len(dati)-4+1,4)):
+#for i in tqdm(range(0,4,4)):
+    # dati.at[i+1,'SO2 Mean'] = media(dati.at[i+1,'SO2 Mean'],dati.at[i+2,'SO2 Mean'])
+    # dati.at[i+1,'SO2 1st Max Value'] = max(dati.at[i+1,'SO2 1st Max Value'],dati.at[i+2,'SO2 1st Max Value'])
+    # dati.at[i+1,'CO Mean'] = media(dati.at[i+1,'CO Mean'],dati.at[i+2,'CO Mean'])
+    # dati.at[i+1,'CO 1st Max Value'] = max(dati.at[i+1,'CO 1st Max Value'],dati.at[i+2,'CO 1st Max Value'])
+    # dati = dati.drop([i],axis=0)
+    # dati = dati.drop([i+2],axis=0)
+    # dati = dati.drop([i+3],axis=0)
+#print(dati[0:8])
+medie_negative=(((dati['SO2 Mean']<0) | (dati['CO Mean']<0)) | (dati['NO2 Mean']<0))
+dati = dati.drop([medie_negative],axis=0)
+print(dati['SO2 Mean']<0)
