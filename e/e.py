@@ -31,7 +31,7 @@ selezione_stati = (i in stati for i in dati_iniziali['State Code']) #maschera de
 dati = (dati_iniziali.loc[selezione_stati]).copy() #mi assicuro di non modificare accidentalmente i dati
 dati.rename(columns={'Unnamed: 0':'original row'}, inplace=True)
 dati.reset_index(inplace=True)
-dati = dati.drop(['index'], axis=1)
+dati.drop(['index'], axis=1, inplace=True)
 
 if check: #controlla la correttezza della selezione dei dati confrontando il numero di dati per gli stati d'interesse
     conteggi_dati_iniziali=(dati_iniziali['State Code'].value_counts()).to_frame() #conteggio ricorrenze di ogni stato
@@ -50,19 +50,24 @@ if check: #controlla la correttezza della selezione dei dati confrontando il num
 ##########################################
 #           SELEZIONE MEDIE
 
-def media(x,y):
-    return (x+y)/2
+indici=[] #indici da rimuovere
+for i in tqdm(range(0,len(dati)-4+1,4)):
+#for i in tqdm(range(262,265,4)):
+    if (((dati.at[i+1,'SO2 Mean']>=0) and (dati.at[i+1,'CO Mean']>=0) )and (dati.at[i+1,'CO Mean']>=0)):
+        dati.at[i+1,'SO2 Mean'] = st.fmean([dati.at[i+1,'SO2 1st Max Value'],dati.at[i+2,'SO2 1st Max Value']])
+        dati.at[i+1,'SO2 1st Max Value'] = max(dati.at[i+1,'SO2 1st Max Value'],dati.at[i+2,'SO2 1st Max Value'])
+        dati.at[i+1,'CO Mean'] = st.fmean([dati.at[i+1,'SO2 1st Max Value'],dati.at[i+2,'SO2 1st Max Value']])
+        dati.at[i+1,'CO 1st Max Value'] = max(dati.at[i+1,'CO 1st Max Value'],dati.at[i+2,'CO 1st Max Value'])
+    else:
+        indici=np.append(indici,i+1)
+    indici=np.append(indici,i)
+    indici=np.append(indici,i+2)
+    indici=np.append(indici,i+3)
+    # else:
+    #   dati.drop([i+1],axis=0,inplace=True)
+    # dati.drop([i],axis=0,inplace=True)
+    # dati.drop([i+2],axis=0,inplace=True)
+    # dati.drop([i+3],axis=0,inplace=True)
 
-#for i in tqdm(range(0,len(dati)-4+1,4)):
-#for i in tqdm(range(0,4,4)):
-    # dati.at[i+1,'SO2 Mean'] = media(dati.at[i+1,'SO2 Mean'],dati.at[i+2,'SO2 Mean'])
-    # dati.at[i+1,'SO2 1st Max Value'] = max(dati.at[i+1,'SO2 1st Max Value'],dati.at[i+2,'SO2 1st Max Value'])
-    # dati.at[i+1,'CO Mean'] = media(dati.at[i+1,'CO Mean'],dati.at[i+2,'CO Mean'])
-    # dati.at[i+1,'CO 1st Max Value'] = max(dati.at[i+1,'CO 1st Max Value'],dati.at[i+2,'CO 1st Max Value'])
-    # dati = dati.drop([i],axis=0)
-    # dati = dati.drop([i+2],axis=0)
-    # dati = dati.drop([i+3],axis=0)
-#print(dati[0:8])
-medie_negative=(((dati['SO2 Mean']<0) | (dati['CO Mean']<0)) | (dati['NO2 Mean']<0))
-dati = dati.drop([medie_negative],axis=0)
-print(dati['SO2 Mean']<0)
+df = dati[~dati.index.isin(indici)]
+print(df)
