@@ -4,7 +4,7 @@ import numpy as np
 #from tqdm import tqdm
 #import statistics as st
 
-#df=pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/medie_temporanee.txt',sep='\t')
+#df=pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/.txt',sep='\t')
 
 dati=rd.funzione_stati()
 

@@ -114,6 +114,7 @@ def funzione_medie(dati): #calcola e salva valori giornalieri di: media,  massim
 
 #!! commentare per bene le funzioni
 #!! i dati sono raggruppati per stazione di rilevamento quindi non è servito esplicitarne la condizione. specificare
+#!! eliminate tutte le giornate con media negativa. elimiare solo le righe?
 #!! AQI calcolato il valor medio. é più sensato prendere il valor massimo?
 #!! 12 righe con CO AQI assente. specificare. inoltre causa anche warning
 #!! warning silenziato: specificare
