@@ -16,7 +16,6 @@ check = False #se True lo script esegue piccoli controlli del corretto funzionam
 ###########################################
 #              SELEZIONE STATI D'INTERESSE
 
-
 def funzione_stati():
     dati_iniziali = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/progetto/pollution_us_2013_2015.csv', nrows=numero_dati)
 
@@ -32,10 +31,10 @@ def funzione_stati():
             #così tengo conto della riga di provenienza una volta elaborati i dati: riga originaria=('original row-2'+2)
 
     selezione_stati = (i in stati for i in dati_iniziali['State Code']) #maschera degli stati d'interesse: type=generator
-                                            #array con indici delle righe riferite ad uno stato in 'stati'
+                                            #equivale ad array con indici delle righe riferite ad uno stato in 'stati'
     dati = (dati_iniziali.loc[selezione_stati]).copy() #copy mi assicura di non modificare accidentalmente i dati originari
     dati.reset_index(inplace=True) #permette di riferirsi alle righe partendo dall'indice 0
-    dati.drop(['index'], axis=1, inplace=True) #non serve avere l'indice splicito in una colonna
+    dati.drop(['index'], axis=1, inplace=True) #non serve avere l'indice esplicito in una colonna
 
     if check: #controlla la correttezza della selezione dei dati confrontando il numero di dati per gli stati d'interesse prima e dopo la selezione
         conteggi_dati_iniziali=(dati_iniziali['State Code'].value_counts()).to_frame() #conteggio ricorrenze di ogni stato. da dati originari
@@ -55,9 +54,6 @@ def funzione_stati():
 
 ##########################################
 #           MEDIE GIORNALIERE
-
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/dati.csv', sep=',', index=False)
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/dati.txt', sep='\t', na_rep='!!', index=False)
 
 # def funzione_medie(dati): #funzionante ma risultati errati poichè assunzione errata che ogni giorno ha 4 righe assegnate. real time:50s
 #     indici=[] #indici da tenere
@@ -101,7 +97,7 @@ def funzione_medie(dati): #calcola e salva valori giornalieri di: media,  massim
                 dati.at[i,'CO Mean']=np.nanmean(dati.loc[i:stop,'CO Mean'])
                 with warnings.catch_warnings(): #a causa di righe in cui tutti i valori sono inesistensi np.nanmean resitituisce nan e un warning
                     warnings.simplefilter("ignore", category=RuntimeWarning) #il warning viene silenziato. il while permette di non perderne altri altrove
-                    dati.at[i,'NO2 AQI']=np.nanmean(dati.loc[i:stop,'NO2 AQI']) #calcolo la media dei valori AQI. " " " "
+                    dati.at[i,'NO2 AQI']=np.nanmean(dati.loc[i:stop,'NO2 AQI']) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
                     dati.at[i,'O3 AQI']=np.nanmean(dati.loc[i:stop,'O3 AQI'])
                     dati.at[i,'SO2 AQI']=np.nanmean(dati.loc[i:stop,'SO2 AQI'])
                     dati.at[i,'CO AQI']=np.nanmean(dati.loc[i:stop,'CO AQI'])
@@ -111,17 +107,15 @@ def funzione_medie(dati): #calcola e salva valori giornalieri di: media,  massim
                 dati.at[i,'CO 1st Max Value']=max(dati.loc[i:stop,'CO 1st Max Value'])
             i=stop+1 #salto gli indici [i+1:stop] poichè già analizzati
             pbar.update(1) #avanza la barra di progresso di 1/total
-    indici= indici.astype(int) #converte eventuali indici salvati come flot in int
-    dati = dati[dati.index.isin(indici)] #conservo solo le righe con indici d'interesse
+    indici= indici.astype(int) #converte eventuali indici salvati come float in int
+    dati = dati[dati.index.isin(indici)] #conservo solo le righe con indici d'interesse. index.isin dà array di bool
     return dati
 
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/medie_temporanee.csv', sep=',', index=False)
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/medie_temporanee.txt', sep='\t', na_rep='!!', index=False)
 
 #!! commentare per bene le funzioni
+#!! i dati sono raggruppati per stazione di rilevamento quindi non è servito esplicitarne la condizione. specificare
 #!! AQI calcolato il valor medio. é più sensato prendere il valor massimo?
 #!! 12 righe con CO AQI assente. specificare. inoltre causa anche warning
 #!! warning silenziato: specificare
-#!! i dati sono raggruppati per stazione di rilevamento quindi non è servito esplicitarne la condizione. specificare
 #!! togliere !!
 
