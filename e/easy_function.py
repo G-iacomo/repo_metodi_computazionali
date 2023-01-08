@@ -1,22 +1,19 @@
 import rielaborazione_dati as rd
 import pandas as pd
 import numpy as np
-#from tqdm import tqdm
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+import warnings
 #import statistics as st
+pd.set_option('display.max_columns', 500) #il numero di colonne massime da stampare
 
-#df=pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/.txt',sep='\t')
+#dati=pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/medie.txt',sep='\t')
+#dati_iniziali = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/progetto/pollution_us_2013_2015.csv')
+dati=pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/dati.txt',sep='\t') #no dati iniziali
 
-dati=rd.funzione_stati()
 
-print(dati)
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/dati.csv', sep=',', index=False)
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/dati.txt', sep='\t', na_rep='', index=False)
-
+#dati=rd.funzione_stati()
 #dati=rd.funzione_medie(dati)
-
-#dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/medie.csv', sep=',', index=False)
 #dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e/medie.txt', sep='\t', na_rep='', index=False)
 
-# df=pd.DataFrame({'numero':[0,1,2,3],'lettera':['a','b','c','d']})
-# indici=(i in ['a','b'] for i in df['lettera'])
-# print(np.nanmean(df.loc[0:2,'numero']))
+medie2 = rd.funzione_medie2(dati)

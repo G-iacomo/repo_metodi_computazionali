@@ -1,3 +1,13 @@
+#!! commentare per bene le funzioni
+#!! rifare selezione stati d'interesse, medie giornaliere con  numpy .values/to_nummpy invece di lic/iloc
+#!! i dati sono raggruppati per stazione di rilevamento quindi non è servito esplicitarne la condizione. specificare
+#!! eliminate tutte le giornate con media negativa. elimiare solo le righe?
+#!! AQI calcolato il valor medio. é più sensato prendere il valor massimo?
+#!! 12 righe con CO AQI assente. specificare. inoltre causa anche warning
+#!! warning silenziato: specificare
+#!! togliere !!
+
+
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -111,12 +121,82 @@ def funzione_medie(dati): #calcola e salva valori giornalieri di: media,  massim
     dati = dati[dati.index.isin(indici)] #conservo solo le righe con indici d'interesse. index.isin dà array di bool
     return dati
 
+def funzione_medie2(dati):
+    i=0 
+    indici=[] #array degli indici delle righe da conservare
+    with tqdm(total=37731) as pbar: #dato l'importante tempo impiegato è utile una barra di progressione. total=ripetizioni del ciclo+1. real time=2giorni
+        while i<(len(dati)):
+            data=dati.at[i,'Date Local'] #giorno di riferimento. salvato eplicitamente per chiarezza
+            stop=0 #indice dell'ultima riga appartenente alla stessa giornata di i
+            for j in range(len(dati)): #scorro le righe successive,a partire da i, per trovare qunado cambia la data.
+                        #range(len(dati)) è un caso estremo: ogni dato dovrebbe appartenere allo stesso giorno;
+                        # dato l'uso di break non c'è dispendio di risorse
+                if (i+j<(len(dati))): #controlla fino all'ultima riga
+                    if (data!=(dati.at[i+j,'Date Local'])): #confronta la data con quella di riferimento
+                        stop=i+j-1 #gli indici [i:stop] si riferiscono a dati della stessa giornata
+                        break
+                else: #superfluo ma così l'uscita dal for è assicurata sempre
+                    break
+                if((i+j==(len(dati)-1))): #caso in cui l'ultima riga abbia la stessa data delle precedenti
+                    stop=i+j #in tal caso devo includere l'ultima riga
+                    break
+            if (((all(dati.loc[i:stop,'SO2 Mean']<0) or all(dati.loc[i:stop,'CO Mean']<0))) or all(dati.loc[i:stop,'NO2 Mean']<0)):
+                print('giornata con almeno un inquinante sempre negativo!')
+            with warnings.catch_warnings(): #a causa di righe in cui tutti i valori sono inesistensi np.nanmean resitituisce nan e un warning
+                warnings.simplefilter("ignore", category=RuntimeWarning) #il warning viene silenziato. il while permette di non perderne altri altrove
+                i_stop=np.empty(0)
+                for i in range(i,stop):
+                    if dati.at[i,'NO2 Mean']>=0:
+                        i_stop=np.append(i_stop,i)
+                dati.at[i,'NO2 Mean']=np.nanmean(dati.loc[i_stop,'NO2 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
+                dati.at[i,'NO2 AQI']=max(dati.loc[i_stop,'NO2 AQI'], default=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
+                dati.at[i,'NO2 1st Max Value']=max(dati.loc[i_stop,'NO2 1st Max Value'], default=0) #seleziona il valore massimo
+                i_stop=np.empty(0)
+                for i in range(i,stop):
+                    if dati.at[i,'O3 Mean']>=0:
+                        i_stop=np.append(i_stop,i)
+                dati.at[i,'O3 Mean']=np.nanmean(dati.loc[i_stop,'O3 Mean'])
+                dati.at[i,'O3 AQI']=max(dati.loc[i_stop,'O3 AQI'], default=0)
+                dati.at[i,'O3 1st Max Value']=max(dati.loc[i_stop,'O3 1st Max Value'], default=0)
+                i_stop=np.empty(0)
+                for i in range(i,stop):
+                    if dati.at[i,'SO2 Mean']>=0:
+                        i_stop=np.append(i_stop,i)
+                dati.at[i,'SO2 Mean']=np.nanmean(dati.loc[i_stop,'SO2 Mean'])
+                dati.at[i,'SO2 AQI']=max(dati.loc[i_stop,'SO2 AQI'], default=0)
+                dati.at[i,'SO2 1st Max Value']=max(dati.loc[i_stop,'SO2 1st Max Value'], default=0)
+                i_stop=np.empty(0)
+                for i in range(i,stop):
+                    if dati.at[i,'CO Mean']>=0:
+                        i_stop=np.append(i_stop,i)
+                dati.at[i,'CO Mean']=np.nanmean(dati.loc[i_stop,'CO Mean'])
+                dati.at[i,'CO 1st Max Value']=max(dati.loc[i_stop,'CO 1st Max Value'], default=0)
+                dati.at[i,'CO AQI']=max(dati.loc[i_stop,'CO AQI'], default=0)
+            indici=np.append(indici,i)
+            i=stop+1 #salto gli indici [i+1:stop] poichè già analizzati
+            pbar.update(1) #avanza la barra di progresso di 1/total
+    indici= indici.astype(int) #converte eventuali indici salvati come float in int
+    dati = dati[dati.index.isin(indici)] #conservo solo le righe con indici d'interesse. index.isin dà array di bool
+    return dati
 
-#!! commentare per bene le funzioni
-#!! i dati sono raggruppati per stazione di rilevamento quindi non è servito esplicitarne la condizione. specificare
-#!! eliminate tutte le giornate con media negativa. elimiare solo le righe?
-#!! AQI calcolato il valor medio. é più sensato prendere il valor massimo?
-#!! 12 righe con CO AQI assente. specificare. inoltre causa anche warning
-#!! warning silenziato: specificare
-#!! togliere !!
+
+
+##############################################
+#           SELEZIONI
+
+def selezione_stato(dati,stato):
+    indici = dati.index[dati['State Code'].to_numpy()==stato].to_numpy()
+    dati = dati.loc[indici]
+    dati.reset_index(inplace=True)
+    dati.drop(['index'], axis=1, inplace=True)
+    #dati = dati.loc[(i in stato for i in dati['State Code'])] #alternativa più lenta
+    return dati
+
+
+def selezione_stazione(dati_stato,stazione):
+    indici = dati_stato.index[dati_stato['Site Num'].to_numpy()==stazione].to_numpy()
+    dati = dati_stato.loc[indici]
+    dati.reset_index(inplace=True)
+    dati.drop(['index'], axis=1, inplace=True)
+    return dati
 
