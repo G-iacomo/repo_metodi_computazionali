@@ -41,7 +41,7 @@ def funzione_stati2(dati_iniziali,stati,check):
 def medie2(dati):
     i=0
     indici=[]
-    with tqdm(total=37731) as pbar: #dato l'importante tempo impiegato è utile una barra di progressione. total=ripetizioni del ciclo+1. real time=6m
+    with tqdm(total=37730) as pbar: #dato l'importante tempo impiegato è utile una barra di progressione. total=ripetizioni del ciclo+1. real time=6m
          while i<(len(dati)):
             data=dati.at[i,'Date Local'] #giorno di riferimento. salvato eplicitamente per chiarezza
             stop=0 #indice dell'ultima riga appartenente alla stessa giornata di i
@@ -89,37 +89,24 @@ def medie2(dati):
 
 
 def media_stato(dati,indici):
-    data=[]
-    for i in range():
-        
-    no2 = []
-    no2_aqi = []
-    no2_max = []
-    o3 = []
-    o3_aqi = []
-    o3_max = []
-    so2 = []
-    so2_aqi = []
-    so2_max = []
-    co = []
-    co_aqi = []
-    co_max = []
     no2=np.nanmean(dati.loc[indici,'NO2 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
-    dati.at[i,'NO2 AQI']=np.nanmax(dati.loc[indici,'NO2 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato. se tutti vuoti=0                
-    dati.at[i,'NO2 1st Max Value']=np.nanmax(dati.loc[indici,'NO2 1st Max Value'], initial=0) #seleziona il valore massimo
+    no2_aqi=np.nanmax(dati.loc[indici,'NO2 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato. se tutti vuoti=0                
+    no2_max=np.nanmax(dati.loc[indici,'NO2 1st Max Value'], initial=0) #seleziona il valore massimo
 
-    dati.at[i,'O3 Mean']=np.nanmean(dati.loc[indici,'O3 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
-    dati.at[i,'O3 AQI']=np.nanmax(dati.loc[indici,'O3 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
-    dati.at[i,'O3 1st Max Value']=np.nanmax(dati.loc[indici,'O3 1st Max Value'], initial=0) #seleziona il valore massimo
+    o3=np.nanmean(dati.loc[indici,'O3 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
+    o3_aqi=np.nanmax(dati.loc[indici,'O3 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
+    o3_max=np.nanmax(dati.loc[indici,'O3 1st Max Value'], initial=0) #seleziona il valore massimo
 
-    dati.at[i,'SO2 Mean']=np.nanmean(dati.loc[indici,'SO2 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
-    dati.at[i,'SO2 AQI']=np.nanmax(dati.loc[indici,'SO2 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
-    dati.at[i,'SO2 1st Max Value']=np.nanmax(dati.loc[indici,'SO2 1st Max Value'], initial=0) #seleziona il valore massimo
+    so2=np.nanmean(dati.loc[indici,'SO2 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
+    so2_aqi=np.nanmax(dati.loc[indici,'SO2 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
+    so2_max=np.nanmax(dati.loc[indici,'SO2 1st Max Value'], initial=0) #seleziona il valore massimo
 
-    dati.at[i,'CO Mean']=np.nanmean(dati.loc[indici,'CO Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
-    dati.at[i,'CO AQI']=np.nanmax(dati.loc[indici,'CO AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
-    dati.at[i,'CO 1st Max Value']=np.nanmax(dati.loc[indici,'CO 1st Max Value'], initial=0) #seleziona il valore massimo
-    return dati
+    co=np.nanmean(dati.loc[indici,'CO Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
+    co_aqi=np.nanmax(dati.loc[indici,'CO AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato
+    co_max=np.nanmax(dati.loc[indici,'CO 1st Max Value'], initial=0) #seleziona il valore massimo
+
+    array=np.array([no2,no2_aqi,no2_max,o3,o3_aqi,o3_max,so2,so2_aqi,so2_max,co,co_aqi,co_max])
+    return array
 
 def selezione_stato(dati,stato):
     indici = dati.index[dati['State Code'].to_numpy()==stato].to_numpy()
