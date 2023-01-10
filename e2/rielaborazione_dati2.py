@@ -86,6 +86,8 @@ def medie2(dati):
     indici= indici.astype(int) #converte eventuali indici salvati come float in int
     dati = dati[dati.index.isin(indici)] #conservo solo le righe con indici d'interesse. index.isin dà array di bool
     dati = dati.fillna(0) #nanmean non dispone di un qualcosa analogo ad intial per nanmax. sostituisco i risultati nan con 0. circa 18k casi
+    dati.reset_index(inplace=True) #permette di riferirsi alle righe partendo dall'indice 0
+    dati.drop(['index'], axis=1, inplace=True) #non serve avere l'indice esplicito in una colonna
     return dati
 
 
