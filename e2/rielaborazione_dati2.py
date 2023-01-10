@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import warnings
+import datetime as dt
 
 
 def funzione_stati2(dati_iniziali,stati,check):
@@ -84,7 +85,7 @@ def medie2(dati):
             pbar.update(1) #avanza la barra di progresso di 1/total
     indici= indici.astype(int) #converte eventuali indici salvati come float in int
     dati = dati[dati.index.isin(indici)] #conservo solo le righe con indici d'interesse. index.isin dà array di bool
-    dati = dati.fillna(0) #nanmean non dispone di intial contrariamente a nanmax. sostituisco i risultati nan con 0. circa 18k casi
+    dati = dati.fillna(0) #nanmean non dispone di un qualcosa analogo ad intial per nanmax. sostituisco i risultati nan con 0. circa 18k casi
     return dati
 
 
@@ -108,12 +109,32 @@ def media_stato(dati,indici):
     array=np.array([no2,no2_aqi,no2_max,o3,o3_aqi,o3_max,so2,so2_aqi,so2_max,co,co_aqi,co_max])
     return array
 
+def riempi(dati):
+    j=0 #indice dati
+    i=0 #indice dati_riempiti
+    data = (dt.datetime.strptime(dati.loc[0,'Date Local'], '%Y-%m-%d').date()) #data di partenza
+    dati_riempiti = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+    with tqdm(total=(((dt.datetime.strptime(dati.loc[len(dati)-1,'Date Local'], '%Y-%m-%d').date())-(dt.datetime.strptime(dati.loc[0,'Date Local'], '%Y-%m-%d').date())).days-1)) as pbar:
+        while i<=(((dt.datetime.strptime(dati.loc[len(dati)-1,'Date Local'], '%Y-%m-%d').date())-(dt.datetime.strptime(dati.loc[0,'Date Local'], '%Y-%m-%d').date())).days-1):
+            data_dati = dt.datetime.strptime(dati.loc[j,'Date Local'], '%Y-%m-%d').date()
+            if data_dati == data:
+                dati_riempiti.loc[i]=dati.loc[j]
+                j=j+1
+                i=i+1
+            if data_dati > data:
+                dati_riempiti.loc[i,'Date Local'] = data
+                dati_riempiti.iloc[i,1:] = media_stato(dati,np.array([j-1,j]))
+                i=i+1
+            data = data + dt.timedelta(days=1)
+            pbar.update(1) #avanza la barra di progresso di 1/total
+    return dati_riempiti
+
 def selezione_stato(dati,stato):
     indici = dati.index[dati['State Code'].to_numpy()==stato].to_numpy()
     return indici
 
-def selezione_stazioni(dati,stazione):
-    indici = dati.index[dati['Site Num'].to_numpy()==stazione].to_numpy()
+def selezione_indirizzo(dati,indirizzo):
+    indici = dati.index[dati['Address'].to_numpy()==indirizzo].to_numpy()
     return indici
 
 def selezione_data(dati,data):
