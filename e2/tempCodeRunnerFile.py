@@ -1,7 +1,6 @@
-
-
-
-
-
-
-confronto_temporale()
+stati_interesse()
+medie_giornaliere()
+stati_singoli_stazioni()
+medie_stati()
+nazione_media()
+riempi_tutto()

@@ -43,60 +43,57 @@ dati_iniziali = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/proget
 stati = np.array([6,8,48,46,36]) # codici degli stati analizzati.
                         #rispettivamente California, Colorado, Texas, South Dakota, New York
 stati_nome={'california','colorado','texas','south dakota','new york'}
-check = False
+check = True
 
-def stati_interesse():
-    dati = me.funzione_stati2(dati_iniziali,stati,check)
+dati = me.funzione_stati2(dati_iniziali,stati,check)
 
 # # dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/dati_no_medie.txt', sep='\t', na_rep='', index=False)
 ##############################################################################################
 #   medie giornaliere singole stazioni
 # dati = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/dati_no_medie.txt', sep='\t')
 
-def medie_giornaliere():
-    print('\ncalcolo delle medie giornaliere:\n')
-    medie = me.medie2(dati)
+print('\ncalcolo delle medie giornaliere:\n')
+medie = me.medie2(dati)
 
 # # medie.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie.txt', sep='\t', na_rep='', index=False)
 ##############################################################################################
 #   stati singoli & stazioni california
 # medie = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie.txt', sep='\t')
 
-def stati_singoli_stazioni():
-    indici_california = me.selezione_stato(medie,6)
-    california = me.dataframe_filtrato(medie,indici_california)
+indici_california = me.selezione_stato(medie,6)
+california = me.dataframe_filtrato(medie,indici_california)
 
-    indici_colorado = me.selezione_stato(medie,8)
-    colorado = me.dataframe_filtrato(medie,indici_colorado)
+indici_colorado = me.selezione_stato(medie,8)
+colorado = me.dataframe_filtrato(medie,indici_colorado)
 
-    indici_new_york = me.selezione_stato(medie,36)
-    new_york = me.dataframe_filtrato(medie,indici_new_york)
+indici_new_york = me.selezione_stato(medie,36)
+new_york = me.dataframe_filtrato(medie,indici_new_york)
 
-    indici_south_dakota = me.selezione_stato(medie,46)
-    south_dakota = me.dataframe_filtrato(medie,indici_south_dakota)
+indici_south_dakota = me.selezione_stato(medie,46)
+south_dakota = me.dataframe_filtrato(medie,indici_south_dakota)
 
-    indici_texas = me.selezione_stato(medie,48)
-    texas = me.dataframe_filtrato(medie,indici_texas)
+indici_texas = me.selezione_stato(medie,48)
+texas = me.dataframe_filtrato(medie,indici_texas)
 
-    indici_stazione1 = me.selezione_indirizzo(california,'1630 N MAIN ST, LOS ANGELES') #site num=1103 univoco ma non usato per uniformità
-    stazione1 = me.dataframe_filtrato(california,indici_stazione1)
-    if any(stazione1['City']!='Los Angeles')==True:
-        print(r'CHECK: La selezione della stazione 1 è ambigua')
+indici_stazione1 = me.selezione_indirizzo(california,'1630 N MAIN ST, LOS ANGELES') #site num=1103 univoco ma non usato per uniformità
+stazione1 = me.dataframe_filtrato(california,indici_stazione1)
+if any(stazione1['City']!='Los Angeles')==True:
+    print(r'CHECK: La selezione della stazione 1 è ambigua')
 
-    indici_stazione2 = me.selezione_indirizzo(california,'170 meters SE of Donna Dr. & Humboldt Hill me., Eureka, CA') #site num=1005 univoco ma non usato per uniformità
-    stazione2 = me.dataframe_filtrato(california,indici_stazione2)
-    if any(stazione2['City']!='Not in a city')==True:
-        print(r'CHECK: La selezione della stazione 2 è ambigua')
+indici_stazione2 = me.selezione_indirizzo(california,'170 meters SE of Donna Dr. & Humboldt Hill Rd., Eureka, CA') #site num=1005 univoco ma non usato per uniformità
+stazione2 = me.dataframe_filtrato(california,indici_stazione2)
+if any(stazione2['City']!='Not in a city')==True:
+    print(r'CHECK: La selezione della stazione 2 è ambigua')
 
-    indici_stazione3 = me.selezione_indirizzo(california,'1029 ETHEL ST, CALEXICO HIGH SCHOOL') #site num causa ambiguità. 'Site Num'=5 non univoco con indirizzo e/o contea e/o città
-    stazione3 = me.dataframe_filtrato(california,indici_stazione3)
-    if any(stazione3['City']!='Calexico')==True:
-        print(r'CHECK: La selezione della stazione 3 è ambigua')
+indici_stazione3 = me.selezione_indirizzo(california,'1029 ETHEL ST, CALEXICO HIGH SCHOOL') #site num causa ambiguità. 'Site Num'=5 non univoco con indirizzo e/o contea e/o città
+stazione3 = me.dataframe_filtrato(california,indici_stazione3)
+if any(stazione3['City']!='Calexico')==True:
+    print(r'CHECK: La selezione della stazione 3 è ambigua')
 
-    indici_stazione4 = me.selezione_indirizzo(california,'1865 D RUMRILL BLVD, San Pablo') #site num causa ambiguità. 'Site Num'=1004 non univoco con indirizzo e/o contea e/o città
-    stazione4 = me.dataframe_filtrato(california,indici_stazione4)
-    if any(stazione4['City']!='San Pablo')==True:
-        print(r'CHECK: La selezione della stazione 4 è ambigua')
+indici_stazione4 = me.selezione_indirizzo(california,'1865 D RUMRILL BLVD, San Pablo') #site num causa ambiguità. 'Site Num'=1004 non univoco con indirizzo e/o contea e/o città
+stazione4 = me.dataframe_filtrato(california,indici_stazione4)
+if any(stazione4['City']!='San Pablo')==True:
+    print(r'CHECK: La selezione della stazione 4 è ambigua')
 
 
 # # stazione1.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione1.txt', sep='\t', na_rep='', index=False)
@@ -120,47 +117,47 @@ def stati_singoli_stazioni():
 # south_dakota = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/south_dakota.txt', sep='\t')
 # texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/texas.txt', sep='\t')
 
-def medie_stati():
-    print('\ncalcolo delle medie giornaliere dei cinque stati:\n')
-    date = np.unique(california['Date Local'].to_numpy()) #le date contenute in california prese una sola volta in formato numpy
-    medie_california = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
-    for i in tqdm(range(len(date))):
-        data=date[i]
-        indici_data = me.selezione_data(california,data)
-        medie_california.loc[i,'Date Local'] = data
-        medie_california.iloc[i,1:] = me.media_stato(california,indici_data)
 
-    date = np.unique(colorado['Date Local'].to_numpy()) #le date contenute in colorado prese una sola volta in formato numpy
-    medie_colorado = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
-    for i in tqdm(range(len(date))):
-        data=date[i]
-        indici_data = me.selezione_data(colorado,data)
-        medie_colorado.loc[i,'Date Local'] = data
-        medie_colorado.iloc[i,1:] = me.media_stato(colorado,indici_data)
+print('\ncalcolo delle medie giornaliere dei cinque stati:\n')
+date = np.unique(california['Date Local'].to_numpy()) #le date contenute in california prese una sola volta in formato numpy
+medie_california = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+for i in tqdm(range(len(date))):
+    data=date[i]
+    indici_data = me.selezione_data(california,data)
+    medie_california.loc[i,'Date Local'] = data
+    medie_california.iloc[i,1:] = me.media_stato(california,indici_data)
 
-    date = np.unique(new_york['Date Local'].to_numpy()) #le date contenute in new_york prese una sola volta in formato numpy
-    medie_new_york = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
-    for i in tqdm(range(len(date))):
-        data=date[i]
-        indici_data = me.selezione_data(new_york,data)
-        medie_new_york.loc[i,'Date Local'] = data
-        medie_new_york.iloc[i,1:] = me.media_stato(new_york,indici_data)
+date = np.unique(colorado['Date Local'].to_numpy()) #le date contenute in colorado prese una sola volta in formato numpy
+medie_colorado = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+for i in tqdm(range(len(date))):
+    data=date[i]
+    indici_data = me.selezione_data(colorado,data)
+    medie_colorado.loc[i,'Date Local'] = data
+    medie_colorado.iloc[i,1:] = me.media_stato(colorado,indici_data)
 
-    date = np.unique(south_dakota['Date Local'].to_numpy()) #le date contenute in south_dakota prese una sola volta in formato numpy
-    medie_south_dakota = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
-    for i in tqdm(range(len(date))):
-        data=date[i]
-        indici_data = me.selezione_data(south_dakota,data)
-        medie_south_dakota.loc[i,'Date Local'] = data
-        medie_south_dakota.iloc[i,1:] = me.media_stato(south_dakota,indici_data)
+date = np.unique(new_york['Date Local'].to_numpy()) #le date contenute in new_york prese una sola volta in formato numpy
+medie_new_york = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+for i in tqdm(range(len(date))):
+    data=date[i]
+    indici_data = me.selezione_data(new_york,data)
+    medie_new_york.loc[i,'Date Local'] = data
+    medie_new_york.iloc[i,1:] = me.media_stato(new_york,indici_data)
 
-    date = np.unique(texas['Date Local'].to_numpy()) #le date contenute in texas prese una sola volta in formato numpy
-    medie_texas = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
-    for i in tqdm(range(len(date))):
-        data=date[i]
-        indici_data = me.selezione_data(texas,data)
-        medie_texas.loc[i,'Date Local'] = data
-        medie_texas.iloc[i,1:] = me.media_stato(texas,indici_data)
+date = np.unique(south_dakota['Date Local'].to_numpy()) #le date contenute in south_dakota prese una sola volta in formato numpy
+medie_south_dakota = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+for i in tqdm(range(len(date))):
+    data=date[i]
+    indici_data = me.selezione_data(south_dakota,data)
+    medie_south_dakota.loc[i,'Date Local'] = data
+    medie_south_dakota.iloc[i,1:] = me.media_stato(south_dakota,indici_data)
+
+date = np.unique(texas['Date Local'].to_numpy()) #le date contenute in texas prese una sola volta in formato numpy
+medie_texas = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+for i in tqdm(range(len(date))):
+    data=date[i]
+    indici_data = me.selezione_data(texas,data)
+    medie_texas.loc[i,'Date Local'] = data
+    medie_texas.iloc[i,1:] = me.media_stato(texas,indici_data)
 
 # # medie_california.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_california.txt', sep='\t', na_rep='', index=False)
 # # medie_colorado.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_colorado.txt', sep='\t', na_rep='', index=False)
@@ -177,17 +174,16 @@ def medie_stati():
 # medie_texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas.txt', sep='\t')
 
 
-def nazione_media():
-    nazione = pd.concat([medie_california, medie_colorado, medie_new_york, medie_south_dakota, medie_texas], keys=['california','colorado','new york','south dakota','texas'], names=['State'] )
-    nazione.reset_index(inplace=True) #permette di riferirsi alle righe partendo dall'indice 0
-    nazione.drop(['level_1'], axis=1, inplace=True) #non serve avere l'indice esplicito in una colonna
-    print('\ncalcolo delle medie giornaliere nazionali:\n')
-    date = np.unique(nazione['Date Local'].to_numpy()) #le date contenute in california prese una sola volta in formato numpy
-    medie_nazione = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
-    for i in tqdm(range(len(date))):
-        data=date[i]
-        indici_data = me.selezione_data(nazione,data)
-        medie_nazione.loc[i]=np.append(data,me.media_stato(nazione,indici_data))
+nazione = pd.concat([medie_california, medie_colorado, medie_new_york, medie_south_dakota, medie_texas], keys=['california','colorado','new york','south dakota','texas'], names=['State'] )
+nazione.reset_index(inplace=True) #permette di riferirsi alle righe partendo dall'indice 0
+nazione.drop(['level_1'], axis=1, inplace=True) #non serve avere l'indice esplicito in una colonna
+print('\ncalcolo delle medie giornaliere nazionali:\n')
+date = np.unique(nazione['Date Local'].to_numpy()) #le date contenute in california prese una sola volta in formato numpy
+medie_nazione = pd.DataFrame(columns=['Date Local','NO2 Mean','NO2 AQI','NO2 1st Max Value','O3 Mean','O3 AQI','O3 1st Max Value','SO2 Mean','SO2 AQI','SO2 1st Max Value','CO Mean','CO AQI','CO 1st Max Value'])
+for i in tqdm(range(len(date))):
+    data=date[i]
+    indici_data = me.selezione_data(nazione,data)
+    medie_nazione.loc[i]=np.append(data,me.media_stato(nazione,indici_data))
 
 
 
@@ -204,18 +200,17 @@ def nazione_media():
 # nazione = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/nazione.txt', sep='\t')
 
 
-def riempi_tutto():
-    print('\nriempo i giorni mancanti\nci sarnno 10 barre di progressione\n')
-    stazione1_riempita = me.riempi(stazione1)
-    stazione2_riempita = me.riempi(stazione2)
-    stazione3_riempita = me.riempi(stazione3)
-    stazione4_riempita = me.riempi(stazione4)
-    medie_california_riempita = me.riempi(medie_california)
-    medie_colorado_riempita = me.riempi(medie_colorado)
-    medie_new_york_riempita = me.riempi(medie_new_york)
-    medie_south_dakota_riempita = me.riempi(medie_south_dakota)
-    medie_texas_riempita = me.riempi(medie_texas)
-    medie_nazione_riempita = me.riempi(medie_nazione)
+print('\nriempo i giorni mancanti\nci sarnno 10 barre di progressione\n')
+stazione1_riempita = me.riempi(stazione1)
+stazione2_riempita = me.riempi(stazione2)
+stazione3_riempita = me.riempi(stazione3)
+stazione4_riempita = me.riempi(stazione4)
+medie_california_riempita = me.riempi(medie_california)
+medie_colorado_riempita = me.riempi(medie_colorado)
+medie_new_york_riempita = me.riempi(medie_new_york)
+medie_south_dakota_riempita = me.riempi(medie_south_dakota)
+medie_texas_riempita = me.riempi(medie_texas)
+medie_nazione_riempita = me.riempi(medie_nazione)
 
 
 # # stazione1_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione1_riempita.txt', sep='\t', na_rep='', index=False)
@@ -229,11 +224,3 @@ def riempi_tutto():
 # # medie_texas_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas_riempita.txt', sep='\t', na_rep='', index=False)
 # # medie_nazione_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_nazione_riempita.txt', sep='\t', na_rep='', index=False)
 
-
-# if __name__ == "__main__":
-#     stati_interesse()
-#     medie_giornaliere()
-#     stati_singoli_stazioni()
-#     medie_stati()
-#     nazione_media()
-#     riempi_tutto()
