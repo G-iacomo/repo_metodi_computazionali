@@ -133,13 +133,13 @@ def nazione_temporale(): #confronto inquinanti con coefficienti moltiplicativi
 #   calcolo Fourier: spettro di potenza
 
 def fourier(dati,inquinante):
-    nyquist = 0.5 # !!
+    nyquist = 0.5 
     coef_f = fft.rfft(dati[inquinante].to_numpy())
     indici =  np.arange(1,(coef_f.size//2)) #escludo il coef. 0 "divergente"
     coef_ps = np.absolute(coef_f[indici])**2
     coef_freq_f = nyquist*fft.rfftfreq(coef_f.size, d=1)
     freq_plot = coef_freq_f[indici] #eventuale coef. 0
-    return freq_plot,coef_ps #!!
+    return freq_plot,coef_ps 
 
 
 
@@ -174,13 +174,18 @@ def spettro_nazione():
 #############################################################################
 # spettro potenza inquinanti stati
 
-def spettro_stati():
+def spettro_stati(esemplificativi):
     print('\nconfronto dello spettro di potenza dei vari inquinanti a livello statale:\n')
+    if esemplificativi==False:
+        stati=[california,colorado,new_york,south_dakota,texas]
+        nome_stati = ['california','colorado','new_york','south_dakota','texas']
+    else:
+        stati=[california]
+        nome_stati = ['california']
     inquinanti = ['NO2 Mean','O3 Mean','SO2 Mean','CO Mean']
     etichette = [r'NO2 [$ppb^2$]',r'O3 [$ppb^2$]',r'SO2 [$ppm^2$]',r'CO [$ppm^2$]']
-    stati=[california,colorado,new_york,south_dakota,texas]
-    nome_stati=['California','Colorado','New York','South Dakota','Texas']
     for j in range(len(stati)):
+        print('\n\n'+nome_stati[j])
         plt.figure(j+1)
         for i in range(len(inquinanti)):
             freq_plot,spettro_pot = fourier(nazione,inquinanti[i])
@@ -206,18 +211,23 @@ def spettro_stati():
 ################################################################
 # spettro potenza inquinanti stazioni
 
-def spettro_stazioni():
+def spettro_stazioni(esemplificativi):
     print('\nconfronto dello spettro di potenza dei vari inquinanti rilevati in quattro stazioni della California:\n')
+    if esemplificativi==False:
+        stati=[s1,s2,s3,s4]
+        nome_città=['Los Angeles (LAC)','Not a city (HUM)','Calexico (IMP)','San Pablo (CC)']
+    else:
+        stati=[s1]
+        nome_città=['Los Angeles (LAC)']
     inquinanti = ['NO2 Mean','O3 Mean','SO2 Mean','CO Mean']
     etichette = [r'NO2 [$ppb^2$]',r'O3 [$ppb^2$]',r'SO2 [$ppm^2$]',r'CO [$ppm^2$]']
-    stati=[s1,s2,s3,s4] #!!
-    nome_città=['Los Angeles (LAC)','Not a city (HUM)','Calexico (IMP)','San Pablo (CC)']#!!
     for j in range(len(stati)):
+        print('\n\n'+nome_città[j])
         plt.figure(j+1)
         for i in range(len(inquinanti)):
             freq_plot,spettro_pot = fourier(nazione,inquinanti[i])
             plt.plot(freq_plot,spettro_pot, label=etichette[i])
-            indice_cmax = np.argmax(spettro_pot) #+1 !!
+            indice_cmax = np.argmax(spettro_pot) 
             plt.plot(freq_plot[indice_cmax],spettro_pot[indice_cmax],'.',label='massimo')
             print('\n\n'+etichette[i]+'\nMassimo {:f}\nFreq {:f}\nPeriodo aprox. int. '.format( spettro_pot[indice_cmax], freq_plot[indice_cmax])+'{:d}'.format(int(1/freq_plot[indice_cmax]))  ) #!!
         plt.xlabel(r'frequenza [$d^{-1}$]')
@@ -235,17 +245,3 @@ def spettro_stazioni():
 
 
 
-
-
-
-
-
-
-
-
-# !!!!!
-    # coft                            coef_fourier
-    # cops                           
-    # cofreq                         freq_fourier
-    # cofreq[100:len(coft)//2]      freq_fourier[100:len(coef_fourier)//2]          freq_plot
-    # cops[100:len(coft)//2]             spettro_pot

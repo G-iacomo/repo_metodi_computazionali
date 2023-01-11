@@ -2,10 +2,14 @@ import pandas as pd
 import numpy as np
 from scipy import fft
 # import datetime as dt
-from tqdm import tqdm
+#from tqdm import tqdm
 #import rielaborazione_dati2 as rd
 import matplotlib.pyplot  as plt
-import moduli_analisi as ma
+import moduli_inversa as mi
+
+
+esemplificativi = True #default=True. per visualizzare tutti i grafici realizzabili False. 
+    # WARNING: 140 grafici totali
 
 
 s1 = pd.read_csv('/home/gb/Desktop/unipg//metodi_computazionali/repo_metodi_computazionali/e2/stazione1_riempita.txt', sep='\t')
@@ -19,70 +23,41 @@ south_dakota = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_me
 texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas_riempita.txt', sep='\t')
 nazione = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_nazione_riempita.txt', sep='\t')
 
-dati = nazione['NO2 Mean'].to_numpy()
-tempo = nazione['Date Local'].to_numpy()
-date = nazione['Date Local'] #!!
-segni_x=[]
-j = 0
-for i in range(len(nazione)):
-    if ((date[i][-1]=='1') and (date[i][-2]=='0')):
-        if ((j%2)==0):
-            segni_x = np.append(segni_x,date[i])
-        j=j+1
-segni_x = np.append(segni_x,date.loc[len(date)-1])
 
+if esemplificativi==False:
+    inquinanti = ['NO2 Mean','O3 Mean','SO2 Mean','CO Mean']
+    stati=[california,colorado,new_york,south_dakota,texas]
+    nomi_stati = ['california','colorado','new_york','south_dakota','texas']
+    stazioni=[s1,s2,s3,s4]
+    nomi_stazioni=['Los Angeles (LAC)','Not a city (HUM)','Calexico (IMP)','San Pablo (CC)']
+else:
+    inquinanti = ['NO2 Mean']
+    stati=[california]
+    nomi_stati = ['california']
+    stazioni=[s1]
+    nomi_stazioni=['Los Angeles (LAC)']
 
-filtro = 0.4e-2 #filtro in frequenza 
-# filtro =1e5 #filtro in ampiezza
+################################
+#   inversa nazione 
 
-# fourier
-coef_f = fft.rfft(dati)
-# indici =  np.arange(1,(coef_f.size//2))
-indici =  np.arange(0,(coef_f.size//2)) #coef. 0 !!
-coef_ps = np.absolute(coef_f[indici])**2
-coef_freq_f = 0.5*fft.rfftfreq(coef_f.size, d=1)
-plt.plot(coef_freq_f[indici],coef_ps)
-# plt.axhline (filtro,color='red',linestyle=':',alpha=0.8) # filtro in ampiezza
-plt.axvline (filtro,color='red',linestyle=':',alpha=0.8) #filtro in frequenza
-plt.yscale('log')
-plt.xscale('log')
-plt.show()
+print('\nricostruzione attraverso l\'inversa dei dati nazionali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
+for inquinante in inquinanti:
+    mi.inversa(nazione, inquinante)
 
+################################
+#   inversa stati
 
+print('\nricostruzione attraverso l\'inversa dei dati statali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
+for j in range(len(stati)):
+    print('\n\n'+nomi_stati[j])
+    for inquinante in inquinanti:
+        mi.inversa(stati[j], inquinante)
 
+###############################
+#   inversa stazioni
 
-# inversa
-
-# maschera = (np.absolute(coef_freq_f)**2 > 0.143) | ((np.absolute(coef_freq_f)**2 > filtro) & (np.absolute(coef_freq_f)**2 < 0.142))#filtro in freq strano
-# differenze non tangibili
-
-maschera = np.absolute(coef_freq_f)**2 > filtro #filtro in freq
-# maschera = np.absolute(coef_f)**2 < filtro #filtro in ampiezza
-filtrato = coef_f[:len(maschera)].copy()
-filtrato[maschera] = 0
-dati_inversa = fft.irfft(filtrato, n=len(dati))
-
-
-
-
-
-
-
-
-
-
-
-
-#grafico temporale
-plt.plot(tempo, dati)
-plt.xlabel('data [yyyy-mm-dd]')
-plt.ylabel('concentrazioni')
-#plt.yscale('log')
-plt.xticks(segni_x,rotation=30, ha='right')
-#plt.legend(fontsize=12, loc = 'best', frameon=True)
-plt.grid()
-plt.tight_layout()
-
-plt.plot(tempo,dati_inversa)
-
-plt.show()
+print('\nricostruzione attraverso l\'inversa dei dati locali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
+for j in range(len(stazioni)):
+    print('\n\n'+nomi_stazioni[j])
+    for inquinante in inquinanti:
+        mi.inversa(stazioni[j], inquinante)
