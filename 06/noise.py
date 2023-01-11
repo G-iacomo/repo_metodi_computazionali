@@ -4,9 +4,9 @@ from scipy import optimize
 from scipy import fft
 import pandas as pd
 #importo
-d1=pd.read_csv('/home/gb980061/repo_metodi_computazionali/06/data_sample1.csv')
-d2=pd.read_csv('/home/gb980061/repo_metodi_computazionali/06/data_sample2.csv')
-d3=pd.read_csv('/home/gb980061/repo_metodi_computazionali/06/data_sample3.csv')
+d1=pd.read_csv('/home/gb/Desktop/giacomo/ubuntu/unipg/metodi_computazionali/repo_metodi_computazionali/06/data_sample1.csv')
+d2=pd.read_csv('/home/gb/Desktop/giacomo/ubuntu/unipg/metodi_computazionali/repo_metodi_computazionali/06/data_sample2.csv')
+d3=pd.read_csv('/home/gb/Desktop/giacomo/ubuntu/unipg/metodi_computazionali/repo_metodi_computazionali/06/data_sample3.csv')
 #grafici dati
 plt.plot(d1['time'],d1['meas'], color= 'grey')
 plt.plot(d2['time'],d2['meas'], color= 'pink')
