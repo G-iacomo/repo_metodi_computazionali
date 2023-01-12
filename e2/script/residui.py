@@ -1,14 +1,8 @@
-import pandas as pd
+import moduli_residui as mr
 import numpy as np
-from scipy import fft
-# import datetime as dt
-#from tqdm import tqdm
-#import rielaborazione_dati2 as rd
-import matplotlib.pyplot  as plt
-import moduli_inversa as mi
+import pandas as pd
 
-
-esemplificativi = True #default=True. per visualizzare tutti i grafici realizzabili False. 
+esemplificativi = True #default=True. per visualizzare tutti i grafici False. 
     # WARNING: 140 grafici totali
 
 
@@ -37,27 +31,13 @@ else:
     stazioni=[s1]
     nomi_stazioni=['Los Angeles (LAC)']
 
-################################
-#   inversa nazione 
 
-print('\nricostruzione attraverso l\'inversa dei dati nazionali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
-for inquinante in inquinanti:
-    mi.inversa(nazione, inquinante)
 
-################################
-#   inversa stati
+inquinanti = ['NO2 Mean','O3 Mean','SO2 Mean','CO Mean']
 
-print('\nricostruzione attraverso l\'inversa dei dati statali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
-for j in range(len(stati)):
-    print('\n\n'+nomi_stati[j])
-    for inquinante in inquinanti:
-        mi.inversa(stati[j], inquinante)
 
-###############################
-#   inversa stazioni
-
-print('\nricostruzione attraverso l\'inversa dei dati locali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
-for j in range(len(stazioni)):
-    print('\n\n'+nomi_stazioni[j])
-    for inquinante in inquinanti:
-        mi.inversa(stazioni[j], inquinante)
+print('\n\nnazione')
+filtro_freq=np.array([4e-3,4e-3,7e-3,0.57e-2])
+filtro_amp=np.array([1e5,0.2,1e3,40])
+for i in range(len(inquinanti)):
+    mr.inversa(nazione,inquinanti[i],filtro_freq[i],filtro_amp[i])
