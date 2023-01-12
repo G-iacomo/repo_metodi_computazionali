@@ -1,9 +1,12 @@
 import pandas as pd
-import moduli_inversa as mi
+import moduli_filtri_fissi as mf
 
+#filtri fissati e solo in frequenza
 
 esemplificativi = True #default=True. per visualizzare tutti i grafici False. 
-    # WARNING: 140 grafici totali
+    # WARNING: se false molti grafici
+
+print('\n\neseplificativi: {}'.format(esemplificativi)+'\n\nWARNING: se false molti grafici\n')
 
 
 s1 = pd.read_csv('/home/gb/Desktop/unipg//metodi_computazionali/repo_metodi_computazionali/e2/stazione1_riempita.txt', sep='\t')
@@ -35,8 +38,8 @@ else:
 #   inversa nazione 
 
 print('\nricostruzione attraverso l\'inversa dei dati nazionali\nfiltri a frequenze [1/d]:'+ '4e-3 e 7e-3')
-for inquinante in inquinanti:
-    mi.inversa(nazione, inquinante)
+for inquinante in ['NO2 Mean','O3 Mean','SO2 Mean','CO Mean']:
+    mf.inversa(nazione, inquinante)
 
 ################################
 #   inversa stati
@@ -45,7 +48,7 @@ print('\nricostruzione attraverso l\'inversa dei dati statali\nfiltri a frequenz
 for j in range(len(stati)):
     print('\n\n'+nomi_stati[j])
     for inquinante in inquinanti:
-        mi.inversa(stati[j], inquinante)
+        mf.inversa(stati[j], inquinante)
 
 ###############################
 #   inversa stazioni
@@ -54,4 +57,4 @@ print('\nricostruzione attraverso l\'inversa dei dati locali\nfiltri a frequenze
 for j in range(len(stazioni)):
     print('\n\n'+nomi_stazioni[j])
     for inquinante in inquinanti:
-        mi.inversa(stazioni[j], inquinante)
+        mf.inversa(stazioni[j], inquinante)

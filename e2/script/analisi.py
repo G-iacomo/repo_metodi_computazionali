@@ -9,10 +9,10 @@ def confronto_temporale(multi_grafici):
     ma.nazione_temporale()
 
 
-multi_grafici = False #true se si vogliono molteplici singoli grafici di maggiori dimensioni.
+multi_grafici = True #true se si vogliono molteplici singoli grafici di maggiori dimensioni.
 esemplificativi = True #default=True. per visualizzare tutti i grafici realizzabili False.
 
-# confronto_temporale(multi_grafici)
+confronto_temporale(multi_grafici)
 ma.spettro_nazione()
-# ma.spettro_stati(esemplificativi)
-# ma.spettro_stazioni(esemplificativi)
+ma.spettro_stati(esemplificativi)
+ma.spettro_stazioni(esemplificativi)
