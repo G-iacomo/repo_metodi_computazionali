@@ -2,23 +2,27 @@ import pandas as pd
 import moduli_filtri_fissi as mf
 
 #filtri fissati e solo in frequenza
+###############################################################
+#   parametri modificabili
 
+path='/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/' #specificare la cartella di lavoro. è possibile lasciare la stringa vuota                                                                                                                       '/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/script
 esemplificativi = True #default=True. per visualizzare tutti i grafici False. 
     # WARNING: se false molti grafici
 
+
+
 print('\n\neseplificativi: {}'.format(esemplificativi)+'\n\nWARNING: se false molti grafici\n')
 
-
-s1 = pd.read_csv('/home/gb/Desktop/unipg//metodi_computazionali/repo_metodi_computazionali/e2/stazione1_riempita.txt', sep='\t')
-s2 = pd.read_csv('/home/gb/Desktop/unipg//metodi_computazionali/repo_metodi_computazionali/e2/stazione2_riempita.txt', sep='\t')
-s3 = pd.read_csv('/home/gb/Desktop/unipg//metodi_computazionali/repo_metodi_computazionali/e2/stazione3_riempita.txt', sep='\t')
-s4 = pd.read_csv('/home/gb/Desktop/unipg//metodi_computazionali/repo_metodi_computazionali/e2/stazione4_riempita.txt', sep='\t')
-california = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_california_riempita.txt', sep='\t')
-colorado = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_colorado_riempita.txt', sep='\t')
-new_york = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_new_york_riempita.txt', sep='\t')
-south_dakota = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_south_dakota_riempita.txt', sep='\t')
-texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas_riempita.txt', sep='\t')
-nazione = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_nazione_riempita.txt', sep='\t')
+s1 = pd.read_csv(path+'/stazione1_riempita.txt', sep='\t')
+s2 = pd.read_csv(path+'/stazione2_riempita.txt', sep='\t')
+s3 = pd.read_csv(path+'/stazione3_riempita.txt', sep='\t')
+s4 = pd.read_csv(path+'/stazione4_riempita.txt', sep='\t')
+california = pd.read_csv(path+'/medie_california_riempita.txt', sep='\t')
+colorado = pd.read_csv(path+'/medie_colorado_riempita.txt', sep='\t')
+new_york = pd.read_csv(path+'/medie_new_york_riempita.txt', sep='\t')
+south_dakota = pd.read_csv(path+'/medie_south_dakota_riempita.txt', sep='\t')
+texas = pd.read_csv(path+'/medie_texas_riempita.txt', sep='\t')
+nazione = pd.read_csv(path+'/medie_nazione_riempita.txt', sep='\t')
 
 
 if esemplificativi==False:

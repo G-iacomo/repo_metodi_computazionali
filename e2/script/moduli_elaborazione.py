@@ -6,13 +6,21 @@ import datetime as dt
 
 
 def funzione_stati2(dati_iniziali,stati,check):
+    '''
+    Seleziona i dati di interesse dal dataframe di partenza selezionando quelli apparteneti agli stati scelti
+
+    dati_iniziali : dataframe originario
+    stati : array numpy contenete i codici degli stati scelti. tale informazione si trova nella colonna 'State Code'
+    check : bool. se true esegui piccoli controlli sul processo
+
+    Return: dataframe dati
+    '''
 
     if check: #controlla la presenza di eventuali righe ripetute
         if all(dati_iniziali.duplicated())==False:
             print('\nCHECK: non ci sono duplicati\n   oppure il dataframe è vuoto\n')
         else:
             print('\nCHECK: ci sono dei duplicati\n')
-
     dati_iniziali.drop(['Unnamed: 0'], axis=1, inplace=True) #elimino la colonna senza nome. 
                 #non sono indici in quanto si ripetono pur non essendo duplicate le righe
     dati_iniziali.reset_index(inplace=True,names='original row-2') #assegno un indice ad ogni riga. la colonna si chiama'original row-2'
@@ -23,12 +31,9 @@ def funzione_stati2(dati_iniziali,stati,check):
     dati = (dati_iniziali.loc[selezione_stati]).copy() #copy mi assicura di non modificare accidentalmente i dati originari
     dati.reset_index(inplace=True) #permette di riferirsi alle righe partendo dall'indice 0
     dati.drop(['index'], axis=1, inplace=True) #non serve avere l'indice esplicito in una colonna
-
     if check: #controlla la correttezza della selezione dei dati confrontando il numero di dati per gli stati d'interesse prima e dopo la selezione
         conteggi_dati_iniziali=(dati_iniziali['State Code'].value_counts()).to_frame() #conteggio ricorrenze di ogni stato. da dati originari
         conteggi_dati=dati['State Code'].value_counts().to_frame() #conteggio ricorrenze stati da dati selezionati
-        #print(conteggi_dati_iniziali) #se non commentato stampa il numero di volte che uno stesso stato compare. per controllo manuale
-        #print(conteggi_dati) #se non commentato stampa il numero di volte che uno stesso stato compare. per controllo manuale
         booleano = True #dummy bool
         for i in stati: #confronta le ricorrenze degli stati di interesse
             if conteggi_dati_iniziali.at[i,'State Code'] != conteggi_dati.at[i,'State Code']:
@@ -40,6 +45,18 @@ def funzione_stati2(dati_iniziali,stati,check):
     return dati
 
 def medie2(dati):
+    '''
+    calcola le medie giornaliere delle singole stazioni;
+    seleziona i valori massimi per la qualità dell'aria (AQI alto, inquinante più presente) e il valor massimo; dati successivamente non utilizzati
+    se i dati sono negativi vengono ignorati
+    se i dati di un intera giornata sono negativi viene sostituito al loro posto 0
+    i dati calcolati sono salvati nella prima riga di ogni giornata. l'indice di tale riga è conservato in 'indici'
+    il dataframe viene filtrato attraverso l'uso di indici (attraverso .index e .isin) e restituito
+
+    dati : dataframe su cui eseguire i calcoli
+
+    return : dati :dataframe contenente solo i dati calcolati
+    '''
     i=0
     indici=[]
     with tqdm(total=37730) as pbar: #dato l'importante tempo impiegato è utile una barra di progressione. total=ripetizioni del ciclo+1. real time=6m
@@ -48,7 +65,6 @@ def medie2(dati):
             stop=0 #indice dell'ultima riga appartenente alla stessa giornata di i
             for j in range(len(dati)): #scorro le righe successive,a partire da i, per trovare qunado cambia la data.
                         #range(len(dati)) è un caso estremo: ogni dato dovrebbe appartenere allo stesso giorno;
-                        # dato l'uso di break non c'è dispendio di risorse
                 if (i+j<(len(dati))): #controlla fino all'ultima riga
                     if (data!=(dati.at[i+j,'Date Local'])): #confronta la data con quella di riferimento
                         stop=i+j-1 #gli indici [i:stop] si riferiscono a dati della stessa giornata
@@ -92,6 +108,15 @@ def medie2(dati):
 
 
 def media_stato(dati,indici):
+    '''
+    esegue la media, seleziona il massimo della qualità d'aria e massimo valore registrato solo tra gli indici richiesti
+    e ne restituisce i valori sotto forma di array
+
+    dati : dataframe su cui eseguire i calcoli
+    indici : indici su cui eseguire i calcoli
+
+    return: array : numpy.arrai contenente i valori calcolati
+    '''
     no2=np.nanmean(dati.loc[indici,'NO2 Mean']) #calcolo la media dei valori medi, se il è dato inesistente viene ignorato 
     no2_aqi=np.nanmax(dati.loc[indici,'NO2 AQI'], initial=0) #calcolo la media dei valori AQI. se dato inenistente viene ignorato. se tutti vuoti=0                
     no2_max=np.nanmax(dati.loc[indici,'NO2 1st Max Value'], initial=0) #seleziona il valore massimo
@@ -112,6 +137,17 @@ def media_stato(dati,indici):
     return array
 
 def riempi(dati):
+    '''
+    controlla che non vi siano giorni senza alcun dato. se un giorno presenta dati nulli allora i dati originari erano negativi
+    se un giorno è mancante i dati originari erano assenti
+    in caso il giorno sia presente ne salva i dati
+    in caso il giorno sia mancante ne crea la relattiva riga e ne calcola il valore come la media tra il dato del giorno precedente e il successivo
+    (NOTA: se più giorni mancanti sono consegutivi questi avranno tutti lo stesso valore)
+
+    dati : dataframe su cui controllare le date
+
+    return : dati_riempiti : dataframe con una riga per giornata
+    '''
     j=0 #indice dati
     i=0 #indice dati_riempiti
     data = (dt.datetime.strptime(dati.loc[0,'Date Local'], '%Y-%m-%d').date()) #data di partenza
@@ -132,18 +168,53 @@ def riempi(dati):
     return dati_riempiti
 
 def selezione_stato(dati,stato):
+    '''
+    seleziona gli indici di un dataframe in cui il valore 'State Code' è quello richiesto
+
+    dati : dataframe da filtare
+    stati : int. stato da selezionare
+
+    return : gli indici delle righe selezionate
+    '''
     indici = dati.index[dati['State Code'].to_numpy()==stato].to_numpy()
     return indici
 
 def selezione_indirizzo(dati,indirizzo):
+    '''
+    seleziona gli indici di un dataframe in cui ilindirizzo è quello richiesto
+
+    dati : dataframe da filtare
+    indirizzo : stringa. l'indirizzo da selezionare
+
+    return : gli indici delle righe selezionate
+    '''
     indici = dati.index[dati['Address'].to_numpy()==indirizzo].to_numpy()
     return indici
 
 def selezione_data(dati,data):
+    '''
+    seleziona gli indici di un dataframe la cui data è quella richiesta
+
+    dati : dataframe da filtare
+    data : stringa. l'indirizzo da selezionare
+
+    return : gli indici delle righe selezionate
+    '''
     indici = dati.index[dati['Date Local'].to_numpy()==data].to_numpy()
     return indici
 
 def dataframe_filtrato(dati,indici):
+    '''
+    dato un dataframe e gli indici d'interesse, ne restituisce il dataframe filtrato
+    controlla gli indici solo dove strettamente necessario
+
+    dati : dataframe da filtrare
+    indici : indici da conservare
+    
+
+    return :dataframe filtarto
+    '''
+
     df = dati[indici[0]:indici[-1]+1][dati.index[indici[0]:indici[-1]+1].isin(indici)]
     df.reset_index(inplace=True) #permette di riferirsi alle righe partendo dall'indice 0
     df.drop(['index'], axis=1, inplace=True) #non serve avere l'indice esplicito in una colonna

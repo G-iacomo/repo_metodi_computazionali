@@ -1,37 +1,37 @@
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-#import datetime as dt
 import moduli_elaborazione as me
 
-salvataggio=False #default=True, salva i dati elaborati finali necessari ai successivi file #!!
-
-#!! potevo fare la prima media solo della california e dopo fare la media degli altri stati solo in base alla data.. sarebbe stato più rapido
-#!! giustificalo dicendo che valutare giorno per giorno stazione per stazione è per controllo per casi negativi ecc (anche se la media è additiva)
+######################################################################################
+#   parametri modificabili
+salvataggio=True #default=True, salva i dati elaborati finali necessari ai successivi file 
+check = True #se true esegue piccoli controlli durante la prima parte della rielaborazione dei dati
+path = '' #percorso alla cartella di lavoro                                                                                                             /home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/script/
+    # è possibile lasciare la stringa vuota
 
 #############################################################################################
 #   stati d'interesse
 
-dati_iniziali = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/progetto/pollution_us_2013_2015.csv')
+dati_iniziali = pd.read_csv(path+'/pollution_us_2013_2015.csv')
 stati = np.array([6,8,48,46,36]) # codici degli stati analizzati.
                         #rispettivamente California, Colorado, Texas, South Dakota, New York
 stati_nome={'california','colorado','texas','south dakota','new york'}
-check = True
 
 dati = me.funzione_stati2(dati_iniziali,stati,check)
 
-# # dati.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/dati_no_medie.txt', sep='\t', na_rep='', index=False)
+# # dati.to_csv(path+'/dati_no_medie.txt', sep='\t', na_rep='', index=False)
 ##############################################################################################
 #   medie giornaliere singole stazioni
-# dati = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/dati_no_medie.txt', sep='\t')
+# dati = pd.read_csv(path+'/dati_no_medie.txt', sep='\t')
 
 print('\ncalcolo delle medie giornaliere:\n')
 medie = me.medie2(dati)
 
-# # medie.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie.txt', sep='\t', na_rep='', index=False)
+# # medie.to_csv(path+'/medie.txt', sep='\t', na_rep='', index=False)
 ##############################################################################################
 #   stati singoli & stazioni california
-# medie = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie.txt', sep='\t')
+# medie = pd.read_csv(path+'/medie.txt', sep='\t')
 
 indici_california = me.selezione_stato(medie,6)
 california = me.dataframe_filtrato(medie,indici_california)
@@ -69,26 +69,26 @@ if any(stazione4['City']!='San Pablo')==True:
     print(r'CHECK: La selezione della stazione 4 è ambigua')
 
 
-# # stazione1.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione1.txt', sep='\t', na_rep='', index=False)
-# # stazione2.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione2.txt', sep='\t', na_rep='', index=False)
-# # stazione3.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione3.txt', sep='\t', na_rep='', index=False)
-# # stazione4.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione4.txt', sep='\t', na_rep='', index=False)
-# # california.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/california.txt', sep='\t', na_rep='', index=False)
-# # colorado.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/colorado.txt', sep='\t', na_rep='', index=False)
-# # new_york.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/new_york.txt', sep='\t', na_rep='', index=False)
-# # south_dakota.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/south_dakota.txt', sep='\t', na_rep='', index=False)
-# # texas.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/texas.txt', sep='\t', na_rep='', index=False)
+# # stazione1.to_csv(path+'/stazione1.txt', sep='\t', na_rep='', index=False)
+# # stazione2.to_csv(path+'/stazione2.txt', sep='\t', na_rep='', index=False)
+# # stazione3.to_csv(path+'/stazione3.txt', sep='\t', na_rep='', index=False)
+# # stazione4.to_csv(path+'/stazione4.txt', sep='\t', na_rep='', index=False)
+# # california.to_csv(path+'/california.txt', sep='\t', na_rep='', index=False)
+# # colorado.to_csv(path+'/colorado.txt', sep='\t', na_rep='', index=False)
+# # new_york.to_csv(path+'/new_york.txt', sep='\t', na_rep='', index=False)
+# # south_dakota.to_csv(path+'/south_dakota.txt', sep='\t', na_rep='', index=False)
+# # texas.to_csv(path+'/texas.txt', sep='\t', na_rep='', index=False)
 ##############################################################################################
 #   medie giornaliere stati
-# stazione1 = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione1.txt', sep='\t')
-# stazione2 = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione2.txt', sep='\t')
-# stazione3 = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione3.txt', sep='\t')
-# stazione4 = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione4.txt', sep='\t')
-# california = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/california.txt', sep='\t')
-# colorado = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/colorado.txt', sep='\t')
-# new_york = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/new_york.txt', sep='\t')
-# south_dakota = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/south_dakota.txt', sep='\t')
-# texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/texas.txt', sep='\t')
+# stazione1 = pd.read_csv(path+'/stazione1.txt', sep='\t')
+# stazione2 = pd.read_csv(path+'/stazione2.txt', sep='\t')
+# stazione3 = pd.read_csv(path+'/stazione3.txt', sep='\t')
+# stazione4 = pd.read_csv(path+'/stazione4.txt', sep='\t')
+# california = pd.read_csv(path+'/california.txt', sep='\t')
+# colorado = pd.read_csv(path+'/colorado.txt', sep='\t')
+# new_york = pd.read_csv(path+'/new_york.txt', sep='\t')
+# south_dakota = pd.read_csv(path+'/south_dakota.txt', sep='\t')
+# texas = pd.read_csv(path+'/texas.txt', sep='\t')
 
 
 print('\ncalcolo delle medie giornaliere dei cinque stati:\n')
@@ -132,18 +132,18 @@ for i in tqdm(range(len(date))):
     medie_texas.loc[i,'Date Local'] = data
     medie_texas.iloc[i,1:] = me.media_stato(texas,indici_data)
 
-# # medie_california.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_california.txt', sep='\t', na_rep='', index=False)
-# # medie_colorado.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_colorado.txt', sep='\t', na_rep='', index=False)
-# # medie_new_york.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_new_york.txt', sep='\t', na_rep='', index=False)
-# # medie_south_dakota.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_south_dakota.txt', sep='\t', na_rep='', index=False)
-# # medie_texas.to_csv('/hofor i in range(len(stazione1)-1):
+# # medie_california.to_csv(path+'/medie_california.txt', sep='\t', na_rep='', index=False)
+# # medie_colorado.to_csv(path+'/medie_colorado.txt', sep='\t', na_rep='', index=False)
+# # medie_new_york.to_csv(path+'/medie_new_york.txt', sep='\t', na_rep='', index=False)
+# # medie_south_dakota.to_csv(path+'/medie_south_dakota.txt', sep='\t', na_rep='', index=False)
+# # medie_texas.to_csv(path+'/medie_texas.txt', sep='\t', na_rep='', index=False)
 ##############################################################################################
 #   nazione & media giornaliera nazione
-# medie_california = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_california.txt', sep='\t')
-# medie_colorado = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_colorado.txt', sep='\t')
-# medie_new_york = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_new_york.txt', sep='\t')
-# medie_south_dakota = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_south_dakota.txt', sep='\t')
-# medie_texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas.txt', sep='\t')
+# medie_california = pd.read_csv(path+'/medie_california.txt', sep='\t')
+# medie_colorado = pd.read_csv(path+'/medie_colorado.txt', sep='\t')
+# medie_new_york = pd.read_csv(path+'/medie_new_york.txt', sep='\t')
+# medie_south_dakota = pd.read_csv(path+'/medie_south_dakota.txt', sep='\t')
+# medie_texas = pd.read_csv(path+'/medie_texas.txt', sep='\t')
 
 
 nazione = pd.concat([medie_california, medie_colorado, medie_new_york, medie_south_dakota, medie_texas], keys=['california','colorado','new york','south dakota','texas'], names=['State'] )
@@ -159,17 +159,17 @@ for i in tqdm(range(len(date))):
 
 
 
-# # nazione.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/nazione.txt', sep='\t', na_rep='', index=False)
-# # medie_nazione.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_nazione.txt', sep='\t', na_rep='', index=False)
+# # nazione.to_csv(path+'/nazione.txt', sep='\t', na_rep='', index=False)
+# # medie_nazione.to_csv(path+'/medie_nazione.txt', sep='\t', na_rep='', index=False)
 ###############################################################
 #   riempo i giorni mancanti solo dove serve:
-# medie_california = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_california.txt', sep='\t')
-# medie_colorado = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_colorado.txt', sep='\t')
-# medie_new_york = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_new_york.txt', sep='\t')
-# medie_south_dakota = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_south_dakota.txt', sep='\t')
-# medie_texas = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas.txt', sep='\t')
-# medie_nazione = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_nazione.txt', sep='\t')
-# nazione = pd.read_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/nazione.txt', sep='\t')
+# medie_california = pd.read_csv(path+'/medie_california.txt', sep='\t')
+# medie_colorado = pd.read_csv(path+'/medie_colorado.txt', sep='\t')
+# medie_new_york = pd.read_csv(path+'/medie_new_york.txt', sep='\t')
+# medie_south_dakota = pd.read_csv(path+'/medie_south_dakota.txt', sep='\t')
+# medie_texas = pd.read_csv(path+'/medie_texas.txt', sep='\t')
+# medie_nazione = pd.read_csv(path+'/medie_nazione.txt', sep='\t')
+# nazione = pd.read_csv(path+'/nazione.txt', sep='\t')
 
 
 print('\nriempo i giorni mancanti\nci sarnno 10 barre di progressione\n')
@@ -186,14 +186,14 @@ medie_nazione_riempita = me.riempi(medie_nazione)
 
 
 if salvataggio==True:
-    stazione1_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione1_riempita.txt', sep='\t', na_rep='', index=False)
-    stazione2_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione2_riempita.txt', sep='\t', na_rep='', index=False)
-    stazione3_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione3_riempita.txt', sep='\t', na_rep='', index=False)
-    stazione4_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/stazione4_riempita.txt', sep='\t', na_rep='', index=False)
-    medie_california_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_california_riempita.txt', sep='\t', na_rep='', index=False)
-    medie_colorado_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_colorado_riempita.txt', sep='\t', na_rep='', index=False)
-    medie_new_york_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_new_york_riempita.txt', sep='\t', na_rep='', index=False)
-    medie_south_dakota_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_south_dakota_riempita.txt', sep='\t', na_rep='', index=False)
-    medie_texas_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_texas_riempita.txt', sep='\t', na_rep='', index=False)
-    medie_nazione_riempita.to_csv('/home/gb/Desktop/unipg/metodi_computazionali/repo_metodi_computazionali/e2/medie_nazione_riempita.txt', sep='\t', na_rep='', index=False)
+    stazione1_riempita.to_csv(path+'/stazione1_riempita.txt', sep='\t', na_rep='', index=False)
+    stazione2_riempita.to_csv(path+'/stazione2_riempita.txt', sep='\t', na_rep='', index=False)
+    stazione3_riempita.to_csv(path+'/stazione3_riempita.txt', sep='\t', na_rep='', index=False)
+    stazione4_riempita.to_csv(path+'/stazione4_riempita.txt', sep='\t', na_rep='', index=False)
+    medie_california_riempita.to_csv(path+'/medie_california_riempita.txt', sep='\t', na_rep='', index=False)
+    medie_colorado_riempita.to_csv(path+'/medie_colorado_riempita.txt', sep='\t', na_rep='', index=False)
+    medie_new_york_riempita.to_csv(path+'/medie_new_york_riempita.txt', sep='\t', na_rep='', index=False)
+    medie_south_dakota_riempita.to_csv(path+'/medie_south_dakota_riempita.txt', sep='\t', na_rep='', index=False)
+    medie_texas_riempita.to_csv(path+'/medie_texas_riempita.txt', sep='\t', na_rep='', index=False)
+    medie_nazione_riempita.to_csv(path+'/medie_nazione_riempita.txt', sep='\t', na_rep='', index=False)
 
